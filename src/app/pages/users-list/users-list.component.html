@@ -1,0 +1,182 @@
+<p-toast></p-toast>
+
+<div class="card">
+  <p-toolbar>
+    <ng-template pTemplate="left">
+      <div class="grid">
+        <div class="col-fixed">
+          <button pButton pRipple label="Novo" icon="pi pi-plus" class="p-button-success" (click)="openNew()"></button>
+        </div>
+        <div class="col-fixed">
+          <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
+            (click)="deleteSelectedUsers()" [disabled]="!selectedUsers || !selectedUsers.length"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <div class="col-fixed">
+        <button pButton pRipple label="Atualizar Tabela" icon="pi pi-undo" class="p-button-info"
+          (click)="list()"></button>
+      </div>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="users" [rows]="10" [paginator]="true" [style]="{'margin-top':'20px'}"
+    [globalFilterFields]="['name','email','document','phone']" responsiveLayout="stack" [(selection)]="selectedUsers"
+    [rowHover]="true" dataKey="guid" [showCurrentPageReport]="false" [loading]="loading">
+    <ng-template pTemplate="caption">
+      <div class="grid">
+        <div class="col">
+          <p class="title">Gerenciar Usuários</p>
+        </div>
+        <div class="col-fixed">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" [(ngModel)]="filter" (input)="dt.filterGlobal(filter, 'contains')"
+              placeholder="Pesquisar..." />
+          </span>
+          <button pButton pRipple type="button" icon="pi pi-times" class="p-button-danger p-button-outlined" pTooltip="Limpar Filtro" tooltipPosition="top" (click)="clean(dt)"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 2%">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="name" style="width: 20%">Nome<p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="document" style="width: 20%">CPF<p-sortIcon field="document"></p-sortIcon>
+        </th>
+        <th pSortableColumn="email" style="width: 20%">E-mail<p-sortIcon field="email"></p-sortIcon>
+        </th>
+        <th pSortableColumn="phone" style="width: 20%">Telefone<p-sortIcon field="phone"></p-sortIcon>
+        </th>
+        <th style="width: 28%">Ações</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="user"></p-tableCheckbox>
+        </td>
+        <td>{{user.name}}</td>
+        <td>{{user.document | documentformat}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.phone}}</td>
+        <td>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+            style="margin-left: 5px" (click)="editUser(user)" pTooltip="Editar Usuário" tooltipPosition="top"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" style="margin-left: 5px"
+            (click)="deleteUser(user)" pTooltip="Excluir Usuário" tooltipPosition="top"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        {{users ? users.length == 1 ? users.length + ' Usuário no total.' : users.length + ' Usuários no total.' : 0 + '
+        Usuários no total.'}}
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="userDialog" [style]="{width: '50vw'}" header="Dados do Usuário" [modal]="true"
+  (onHide)="hideDialog()" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="content">
+      <div class="grid">
+        <div class="col-12">
+          <span class="p-float-label">
+            <input type="text" pInputText [(ngModel)]="user.name" maxlength="100" required autofocus />
+            <label for="name">Nome*</label>
+          </span>
+          <small class="p-error" *ngIf="!user.name">Este campo é obrigatório.</small>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col-12">
+          <span class="p-float-label">
+            <input type="text" pInputText [(ngModel)]="user.email" maxlength="200" required />
+            <label for="email">E-mail*</label>
+          </span>
+          <small class="p-error" *ngIf="!user.email">Este campo é obrigatório.</small>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col-6">
+          <span class="p-float-label">
+            <p-inputMask [(ngModel)]="user.document" mask="999.999.999-99"></p-inputMask>
+            <label for="cpf">CPF*</label>
+          </span>
+          <small class="p-error" *ngIf="!user.document">Este campo é obrigatório.</small>
+        </div>
+        <div class="col-6">
+          <span class="p-float-label">
+            <input type="int" pInputText [(ngModel)]="user.phone" maxlength="11" required />
+            <label for="phone">Telefone*</label>
+          </span>
+          <small class="p-error" *ngIf="!user.phone">Este campo é obrigatório.</small>
+        </div>
+      </div>
+      <div class="grid" *ngIf="!user.guid">
+        <div class="col-6">
+          <span class="p-float-label">
+            <p-password [(ngModel)]="user.password" [toggleMask]="true" appendTo="body" weakLabel="Senha Fraca"
+              mediumLabel="Senha Média" strongLabel="Senha Forte" promptLabel="Insira uma senha">
+              <ng-template pTemplate="footer">
+                <p-divider></p-divider>
+                <p class="p-mt-2">Sugestões</p>
+                <ul class="p-pl-2 p-ml-2 p-mt-0" style="line-height: 1.5">
+                  <li>Pelo menos uma letra minúscula.</li>
+                  <li>Pelo menos uma letra maiúscula.</li>
+                  <li>Pelo menos um número.</li>
+                  <li>Mínimo de 8 caracteres.</li>
+                </ul>
+              </ng-template>
+            </p-password>
+            <label for="password">Senha*</label>
+          </span>
+          <small class="p-error" *ngIf="!user.password">Este campo é obrigatório.</small>
+        </div>
+        <div class="col-6">
+          <span class="p-float-label">
+            <p-password [(ngModel)]="user.confirmPassword" [toggleMask]="true" appendTo="body" weakLabel="Senha Fraca"
+              mediumLabel="Senha Média" strongLabel="Senha Forte" promptLabel="Insira a senha novamente.">
+              <ng-template pTemplate="footer">
+                <p-divider></p-divider>
+                <p class="p-mt-2">Sugestões</p>
+                <ul class="p-pl-2 p-ml-2 p-mt-0" style="line-height: 1.5">
+                  <li>Pelo menos uma letra minúscula.</li>
+                  <li>Pelo menos uma letra maiúscula.</li>
+                  <li>Pelo menos um número.</li>
+                  <li>Mínimo de 8 caracteres.</li>
+                </ul>
+              </ng-template>
+            </p-password>
+            <label for="password">Confirme a Senha*</label>
+          </span>
+          <small class="p-error" *ngIf="!user.confirmPassword">Este campo é obrigatório.</small>
+          <br>
+          <small class="p-error" *ngIf="user.password != user.confirmPassword">As senhas não conferem.</small>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-success" (click)="saveUser()"
+      *ngIf="!user.guid"
+      [disabled]="!user.name || !user.email || !user.document || !user.phone || !user.password || user.password != user.confirmPassword ? true : false"></button>
+    <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-success" (click)="saveUser()"
+      *ngIf="user.guid" [disabled]="!user.name || !user.email || !user.document || !user.phone ? true : false"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog #cd [style]="{width: '600px'}">
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times" label="Não" (click)="cd.reject()" class="p-button-danger"></button>
+    <button id="acceptButton" type="button" pButton icon="pi pi-check" label="Sim" (click)="cd.accept()"
+      class="p-button-success"></button>
+  </ng-template>
+</p-confirmDialog>

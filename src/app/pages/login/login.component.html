@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="box">
+    <div class="p-grid" style="padding-top: 20px;">
+      <div class="p-col-12" style="text-align: center;">
+        <img src="../../../assets/logo-title.png" width="150px" alt="">
+        <h4 class="title">Sistema de Pedidos</h4>
+      </div>
+      <div class="p-fluid">
+        <form [formGroup]="form">
+          <div class="p-field first">
+            <span class="p-float-label">
+              <input id="float-input" type="text" pInputText formControlName="email" />
+              <label for="float-input">E-mail</label>
+            </span>
+          </div>
+          <div class="p-field second">
+            <span class="p-float-label">
+              <input id="float-input" type="password" pInputText formControlName="password" />
+              <label for="float-input">Senha</label>
+            </span>
+          </div>
+        </form>
+        <div class="p-field thrid">
+          <p-button label="Entrar" icon="pi pi-sign-in" [disabled]="form.invalid" (onClick)="login()"></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p-dialog [header]="messageDialogTitle" [(visible)]="displayDialog" [modal]="true" [style]="{ width: '50vw' }">
+  <p>{{ messageDialog }}</p>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="displayDialog = false" label="OK"></button>
+  </p-footer>
+</p-dialog>

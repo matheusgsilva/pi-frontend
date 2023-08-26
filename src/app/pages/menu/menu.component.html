@@ -1,0 +1,13 @@
+<div>
+  <app-sidebar [display]="display"></app-sidebar>
+</div>
+<div class="topbar">
+  <app-navbar [display]="display" [pixels]="pixels" (displaySide)="displaySide($event)"></app-navbar>
+ <div class="p-grid">
+    <div class="p-col-12 content">
+      <div class="card" [ngStyle]="{'margin-left': display && innerWidth > 768 ? '250px' : '0px'}">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

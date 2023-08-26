@@ -1,0 +1,28 @@
+<div [ngStyle]="{'width': display ? '250px' : '0vw'}">
+  <div *ngIf="display" [ngStyle]="{'width': display ? '250px' : '0vw'}" [style]="{'width':'250px'}" class="sidebar p-shadow-2">
+    <div class="p-grid img">
+      <div class="p-col-12 table-header">
+        <img src="../../../assets/logo-title.png" width="100px" alt="">
+        <h4>Sistema de Pedidos</h4>
+      </div>
+      <hr style="margin-top: 50px; margin-right: 10px; margin-left: 10px;">
+      <div class="p-col-12 user">
+        <img src="../../../assets/user.png" width="80px" alt="">
+        <h4>Administrador</h4>
+      </div>
+    </div>
+    <hr style="margin-top: 30px; margin-right: 10px; margin-left: 10px;">
+    <div class="p-grid menu">
+      <div class="p-col-12">
+        <p-panelMenu #menu [model]="items" [style]="{'width':'100%', 'min-width':'100%'}"></p-panelMenu>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="p-grid footer">
+  <div class="p-col-12">
+    <h4>&copy; 2023 - Sistema de Pedidos</h4>
+  </div>
+</div>
+
