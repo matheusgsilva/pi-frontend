@@ -16,4 +16,11 @@ export const API_ENDPOINTS = {
     DELETE: "backend/api/product/delete/guid/",
     LIST: "backend/api/product/list"
   },
+  STOCK: {
+    ADD: "backend/api/stock/add",
+    UPDATE: "backend/api/stock/update/guid/",
+    DETAIL: "backend/api/stock/detail/guid/",
+    DELETE: "backend/api/stock/delete/guid/",
+    LIST: "backend/api/stock/list"
+  }
 };

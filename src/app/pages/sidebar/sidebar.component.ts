@@ -31,6 +31,10 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Produtos', icon: PrimeIcons.SHOPPING_CART, routerLink: ['/product-list'],
             style: { 'background-color': this.router.url.includes("product-list") ? '#007eff5e' : 'white' }
+          },
+          {
+            label: 'Estoque', icon: PrimeIcons.CHECK_SQUARE, routerLink: ['/stock-list'],
+            style: { 'background-color': this.router.url.includes("stock-list") ? '#007eff5e' : 'white' }
           }
         ]
       },

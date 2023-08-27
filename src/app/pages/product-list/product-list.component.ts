@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from './product.model';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, SelectItem } from 'primeng/api';
 import { ProductService } from './product.service';
 import { ResponseAPI } from 'src/app/shared/response.model';
 import { from } from 'rxjs';
@@ -24,6 +24,8 @@ export class ProductListComponent implements OnInit {
   product: Product = new Product();
 
   selectedProducts: Product[] = [];
+
+  options: SelectItem[] = [{label: "UNIDADE", value: "UNIT"}, {label: "PESO", value: "WEIGHT"}];
 
   constructor(private messageService: MessageService, private confirmationService: ConfirmationService, private productService: ProductService) { }
 
@@ -82,7 +84,7 @@ export class ProductListComponent implements OnInit {
     this.productDialog = false;
   }
 
-  saveUser() {
+  saveProduct() {
     if (this.products.filter(s => s.guid == this.product?.guid).length == 0)
       this.productService.add({ ...this.product }).subscribe(response => {
         this.getMessage((response as ResponseAPI).code);

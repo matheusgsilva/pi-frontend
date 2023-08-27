@@ -17,7 +17,7 @@ import { ButtonModule } from 'primeng/button';
   ],
   declarations: [
     SidebarComponent,
-    NavbarComponent,
+    NavbarComponent
   ],
   exports: [
     SidebarComponent,
