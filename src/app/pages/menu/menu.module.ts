@@ -36,6 +36,8 @@ import {InputNumberModule} from 'primeng/inputnumber';
 import { registerLocaleData } from '@angular/common';
 import ptBr from '@angular/common/locales/pt';
 import { StockListComponent } from '../stock-list/stock-list.component';
+import { OrderItemComponent } from '../order-item/order-item.component';
+import { OrderListComponent } from '../order-list/order-list.component';
 
 registerLocaleData(ptBr);
 
@@ -78,6 +80,8 @@ registerLocaleData(ptBr);
     DocumentFormatPipe,
     ProductListComponent,
     StockListComponent,
+    OrderListComponent,
+    OrderItemComponent
   ],
 })
 export class MenuModule { }

@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
       .subscribe((response) => {
           localStorage["token"] = response.data.token;
           localStorage["email"] = response.data.email;
-          localStorage["userGuid"] = response.data.guid;
+          localStorage["userGuid"] = response.data.userGuid;
+          localStorage["userName"] = response.data.userName;
           this.router.navigate([""]);
       },
         error => {

@@ -22,5 +22,19 @@ export const API_ENDPOINTS = {
     DETAIL: "backend/api/stock/detail/guid/",
     DELETE: "backend/api/stock/delete/guid/",
     LIST: "backend/api/stock/list"
+  },
+  ORDER: {
+    ADD: "backend/api/order/add",
+    UPDATE: "backend/api/order/update/guid/",
+    DETAIL: "backend/api/order/detail/guid/",
+    DELETE: "backend/api/order/delete/guid/",
+    LIST: "backend/api/order/list"
+  },
+  ORDER_ITEM: {
+    ADD: "backend/api/orderitem/add",
+    UPDATE: "backend/api/orderitem/update/guid/",
+    DETAIL: "backend/api/orderitem/detail/guid/",
+    DELETE: "backend/api/orderitem/delete/guid/",
+    LIST: "backend/api/orderitem/list/"
   }
 };

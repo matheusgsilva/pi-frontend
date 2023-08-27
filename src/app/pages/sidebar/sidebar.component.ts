@@ -35,6 +35,10 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Estoque', icon: PrimeIcons.CHECK_SQUARE, routerLink: ['/stock-list'],
             style: { 'background-color': this.router.url.includes("stock-list") ? '#007eff5e' : 'white' }
+          },
+          {
+            label: 'Pedidos', icon: PrimeIcons.COPY, routerLink: ['/order-list'],
+            style: { 'background-color': this.router.url.includes("order-list") ? '#007eff5e' : 'white' }
           }
         ]
       },
@@ -60,5 +64,9 @@ export class SidebarComponent implements OnInit {
       else
         item.style.backgroundColor = "white";
     });
+  }
+
+  getUser(){
+    return localStorage["userName"];
   }
 }

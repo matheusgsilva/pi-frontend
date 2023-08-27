@@ -1,0 +1,114 @@
+<p-toast></p-toast>
+
+<div class="card">
+  <p-toolbar>
+    <ng-template pTemplate="left">
+      <div class="grid">
+        <div class="col-fixed">
+          <button pButton pRipple label="Novo" icon="pi pi-plus" class="p-button-success" (click)="openNew()"></button>
+        </div>
+        <div class="col-fixed">
+          <button pButton pRipple label="Excluir" icon="pi pi-trash" class="p-button-danger"
+            (click)="deleteSelectedOrder()" [disabled]="!selectedOrders || !selectedOrders.length"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="right">
+      <div class="col-fixed">
+        <button pButton pRipple label="Atualizar Tabela" icon="pi pi-undo" class="p-button-info"
+          (click)="list()"></button>
+      </div>
+    </ng-template>
+  </p-toolbar>
+
+  <p-table #dt [value]="orders" [rows]="10" [paginator]="true" [style]="{'margin-top':'20px'}"
+    [globalFilterFields]="['userName','number']" responsiveLayout="stack" [(selection)]="selectedOrders"
+    [rowHover]="true" dataKey="guid" [showCurrentPageReport]="false" [loading]="loading">
+    <ng-template pTemplate="caption">
+      <div class="grid">
+        <div class="col">
+          <p class="title">Gerenciar Pedidos</p>
+        </div>
+        <div class="col-fixed">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" [(ngModel)]="filter" (input)="dt.filterGlobal(filter, 'contains')"
+              placeholder="Pesquisar..." />
+          </span>
+          <button pButton pRipple type="button" icon="pi pi-times" class="p-button-danger p-button-outlined" pTooltip="Limpar Filtro" tooltipPosition="top" (click)="clean(dt)"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 2%">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th pSortableColumn="orderDate" style="width: 20%">Data do Pedido<p-sortIcon field="orderDate"></p-sortIcon>
+        </th>
+        <th pSortableColumn="number" style="width: 20%">Código do Produto<p-sortIcon field="number"></p-sortIcon>
+        </th>
+        <th pSortableColumn="status" style="width: 20%">Status<p-sortIcon field="status"></p-sortIcon>
+        </th>
+        <th style="width: 20%">Ações</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-order>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="order"></p-tableCheckbox>
+        </td>
+        <td>{{order.orderDate}}</td>
+        <td>{{order.number}}</td>
+        <td>{{order.status}}</td>
+        <td>
+          <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info" style="margin-left: 5px"
+            (click)="navigate(order.guid)" pTooltip="Ver Detalhes" tooltipPosition="top"></button>
+          <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+            style="margin-left: 5px" (click)="editOrder(order)" pTooltip="Editar Pedido" tooltipPosition="top"></button>
+          <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" style="margin-left: 5px"
+            (click)="deleteOrder(order)" pTooltip="Excluir Pedido" tooltipPosition="top"></button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        {{orders ? orders.length == 1 ? orders.length + ' Pedido no total.' : orders.length + ' Pedidos no total.' : 0 + '
+        Pedidos no total.'}}
+      </div>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog [(visible)]="orderDialog" [style]="{width: '50vw'}" header="Dados do Pedido" [modal]="true"
+  (onHide)="hideDialog()" styleClass="p-fluid">
+  <ng-template pTemplate="content">
+    <div class="content">
+      <div class="grid">
+        <div class="col-12">
+          <span class="p-float-label">
+            <input type="text" pInputText [(ngModel)]="order.number" maxlength="100" required autofocus />
+            <label for="name">Número do Pedido*</label>
+          </span>
+          <small class="p-error" *ngIf="!order.number">Este campo é obrigatório.</small>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-danger" (click)="hideDialog()"></button>
+    <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-success" (click)="saveOrder()"
+      *ngIf="!order.guid"
+      [disabled]="!order.number ? true : false"></button>
+    <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-success" (click)="saveOrder()"
+      *ngIf="order.guid" [disabled]="!order.number ? true : false"></button>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog #cd [style]="{width: '600px'}">
+  <ng-template pTemplate="footer">
+    <button type="button" pButton icon="pi pi-times" label="Não" (click)="cd.reject()" class="p-button-danger"></button>
+    <button id="acceptButton" type="button" pButton icon="pi pi-check" label="Sim" (click)="cd.accept()"
+      class="p-button-success"></button>
+  </ng-template>
+</p-confirmDialog>
