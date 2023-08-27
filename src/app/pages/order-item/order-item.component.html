@@ -31,7 +31,7 @@
     <ng-template pTemplate="caption">
       <div class="grid">
         <div class="col">
-          <p class="title">Gerenciar Itens do Pedido</p>
+          <p class="title">Gerenciar Itens do Pedido: {{orderNumber}}</p>
         </div>
         <div class="col-fixed">
           <span class="p-input-icon-left">
@@ -52,8 +52,9 @@
         </th>
         <th pSortableColumn="productCode" style="width: 20%">Código do Produto<p-sortIcon field="productCode"></p-sortIcon>
         </th>
-        <th style="width: 20%">Disponibilidade em Estoque</th>
-        <th style="width: 20%">Quantidade Desejada</th>
+        <th style="width: 20%" *ngIf="orderStatus != 'FINISHED' && orderStatus != 'SENT'">Disponibilidade em Estoque</th>
+        <th style="width: 20%" *ngIf="orderStatus != 'FINISHED' && orderStatus != 'SENT'">Quantidade Desejada</th>
+        <th style="width: 20%" *ngIf="orderStatus == 'FINISHED' || orderStatus == 'SENT'">Quantidade retirada do Estoque</th>
         <th style="width: 20%">Ações</th>
       </tr>
     </ng-template>
@@ -64,7 +65,7 @@
         </td>
         <td>{{orderitem.productName}}</td>
         <td>{{orderitem.productCode}}</td>
-        <td>{{orderitem.productType == 'UNIT' ? orderitem.quantityAvailable == 1 ? '1 Unidade' : orderitem.quantityAvailable + ' Unidades' : orderitem.weightAvailable == 1.000 ? '1 Kilo' : orderitem.weightAvailable?.toString().replace('.', ',') + ' Kilos'}}</td>
+        <td *ngIf="orderStatus != 'FINISHED' && orderStatus != 'SENT'">{{orderitem.productType == 'UNIT' ? orderitem.quantityAvailable == 1 ? '1 Unidade' : orderitem.quantityAvailable + ' Unidades' : orderitem.weightAvailable == 1.000 ? '1 Kilo' : orderitem.weightAvailable?.toString().replace('.', ',') + ' Kilos'}}</td>
         <td>{{orderitem.productType == 'UNIT' ? orderitem.quantity == 1 ? '1 Unidade' : orderitem.quantity + ' Unidades' : orderitem.weight == 1.000 ? '1 Kilo' : orderitem.weight?.toString().replace('.', ',') + ' Kilos'}}</td>
         <td>
           <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"

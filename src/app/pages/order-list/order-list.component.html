@@ -45,15 +45,16 @@
         <th style="width: 2%">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th pSortableColumn="orderDate" style="width: 20%">Data do Pedido<p-sortIcon field="orderDate"></p-sortIcon>
+        <th pSortableColumn="orderDate" style="width: 15%">Data do Pedido<p-sortIcon field="orderDate"></p-sortIcon>
         </th>
-        <th pSortableColumn="number" style="width: 20%">Idetificação do Pedido<p-sortIcon field="number"></p-sortIcon>
+        <th pSortableColumn="number" style="width: 15%">Idetificação do Pedido<p-sortIcon field="number"></p-sortIcon>
         </th>
-        <th pSortableColumn="userName" style="width: 20%">Autor do Pedido<p-sortIcon field="userName"></p-sortIcon>
+        <th pSortableColumn="userName" style="width: 15%">Autor do Pedido<p-sortIcon field="userName"></p-sortIcon>
         </th>
-        <th pSortableColumn="status" style="width: 20%">Status<p-sortIcon field="status"></p-sortIcon>
+        <th pSortableColumn="status" style="width: 15%">Status<p-sortIcon field="status"></p-sortIcon>
         </th>
-        <th style="width: 20%">Ações</th>
+        <th style="width: 15%">Em Estoque</th>
+        <th style="width: 15%">Ações</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-order>
@@ -67,14 +68,20 @@
         <td>{{order.status == 'NEW' ? 'NOVO' : order.status == 'PRODUCTION' ? 'EM PRODUÇÃO' : order.status == 'FINISHED'
           ? 'FINALIZADO' : 'ENVIADO'}}</td>
         <td>
+          <i class="pi pi-times" style="font-size: 2rem; color: red;" *ngIf="!order.hasStock && order.status != 'SENT' && order.status != 'FINISHED'"></i>
+          <i class="pi pi-check" style="font-size: 2rem; color: green;" *ngIf="order.hasStock || order.status == 'SENT' || order.status == 'FINISHED'"></i>
+        </td>
+        <td>
           <button pButton pRipple icon="pi pi-eye" class="p-button-rounded p-button-info" style="margin-left: 5px"
-            (click)="navigate(order.guid)" pTooltip="Ver Detalhes" tooltipPosition="top"></button>
+            (click)="navigate(order.guid, order.status, order.number)" pTooltip="Ver Detalhes" tooltipPosition="top"></button>
           <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
             style="margin-left: 5px" (click)="editOrder(order)" pTooltip="Editar Pedido" tooltipPosition="top"></button>
-          <button pButton pRipple icon="pi pi-angle-double-right" class="p-button-rounded p-button-warning" [disabled]="order.status == 'SENT'"
-            style="margin-left: 5px" (click)="saveOrderStatusNext(order)" pTooltip="Avançar Status do Pedido" tooltipPosition="top"></button>
-          <button pButton pRipple icon="pi pi-angle-double-left" class="p-button-rounded p-button-help" [disabled]="order.status == 'NEW'"
-            style="margin-left: 5px" (click)="saveOrderStatusBack(order)" pTooltip="Voltar Status do Pedido" tooltipPosition="top"></button>
+          <button pButton pRipple icon="pi pi-angle-double-right" class="p-button-rounded p-button-warning"
+            [disabled]="order.status == 'SENT' || (!order.hasStock && order.status != 'FINISHED')" style="margin-left: 5px" (click)="saveOrderStatusNext(order)"
+            pTooltip="Avançar Status do Pedido" tooltipPosition="top"></button>
+          <button pButton pRipple icon="pi pi-angle-double-left" class="p-button-rounded p-button-help"
+            [disabled]="order.status == 'NEW'" style="margin-left: 5px" (click)="saveOrderStatusBack(order)"
+            pTooltip="Voltar Status do Pedido" tooltipPosition="top"></button>
           <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" style="margin-left: 5px"
             (click)="deleteOrder(order)" pTooltip="Excluir Pedido" tooltipPosition="top"></button>
         </td>

@@ -21,6 +21,8 @@ export class OrderItemComponent implements OnInit {
   orderItemDialog: boolean = false;
 
   orderGuid: any = "";
+  orderNumber: any = "";
+  orderStatus: any = "";
   filter: string = "";
 
   orderItems: OrderItem[] = [];
@@ -36,6 +38,8 @@ export class OrderItemComponent implements OnInit {
 
   ngOnInit() {
     this.orderGuid = this.route.snapshot.paramMap.get('orderGuid');
+    this.orderNumber = this.route.snapshot.paramMap.get('orderNumber');
+    this.orderStatus = this.route.snapshot.paramMap.get('orderStatus');
     this.list();
   }
 
