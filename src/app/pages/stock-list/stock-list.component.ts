@@ -39,6 +39,7 @@ export class StockListComponent implements OnInit {
   list() {
     this.loading = true;
     this.options = [];
+    this.products = [];
     this.stockService.list().subscribe(response => {
       this.stocks = (response as ResponseAPI).data as Stock[] || [];
       this.loading = false;
@@ -67,7 +68,7 @@ export class StockListComponent implements OnInit {
           tap(() => this.selectedStocks = [])
         ).subscribe((response) => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }
@@ -85,7 +86,7 @@ export class StockListComponent implements OnInit {
       accept: () => {
         this.stockService.delete(stock.guid).subscribe(response => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }

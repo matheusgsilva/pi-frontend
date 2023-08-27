@@ -16,6 +16,7 @@ export class UsersListComponent implements OnInit {
 
   loading = false;
   userDialog: boolean = false;
+  userPassDialog: boolean = false;
 
   filter: string = "";
 
@@ -55,7 +56,7 @@ export class UsersListComponent implements OnInit {
           tap(() => this.selectedUsers = [])
         ).subscribe((response) => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }
@@ -63,6 +64,11 @@ export class UsersListComponent implements OnInit {
   editUser(user: User) {
     this.user = { ...user, document: user.document!.replace("-", "").replace(/\./g, "") };
     this.userDialog = true;
+  }
+
+  editUserPassword(user: User) {
+    this.user = { ...user, document: user.document!.replace("-", "").replace(/\./g, "") };
+    this.userPassDialog = true;
   }
 
   deleteUser(user: User) {
@@ -73,7 +79,7 @@ export class UsersListComponent implements OnInit {
       accept: () => {
         this.userService.delete(user.guid).subscribe(response => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }
@@ -82,9 +88,13 @@ export class UsersListComponent implements OnInit {
     this.userDialog = false;
   }
 
+  hideDialogPass() {
+    this.userPassDialog = false;
+  }
+
   saveUser() {
     if (this.users.filter(s => s.guid == this.user?.guid).length == 0)
-      this.userService.add({ ...this.user, document: this.user?.document.replace("-", "").replace(/\./g, "")}).subscribe(response => {
+      this.userService.add({ ...this.user, document: this.user?.document.replace("-", "").replace(/\./g, "") }).subscribe(response => {
         this.getMessage((response as ResponseAPI).code);
       }, () => this.getMessage(404));
     else
@@ -92,6 +102,14 @@ export class UsersListComponent implements OnInit {
         this.getMessage((response as ResponseAPI).code);
       }, () => this.getMessage(404));
     this.userDialog = false;
+    this.user = new User();
+  }
+
+  saveUserPass() {
+    this.userService.updatePass({ guid: this.user.guid, password: this.user.password }).subscribe(response => {
+      this.getMessage((response as ResponseAPI).code);
+    }, () => this.getMessage(404));
+    this.userPassDialog = false;
     this.user = new User();
   }
 
@@ -103,7 +121,7 @@ export class UsersListComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Operação não realizada!', life: 3000 });
   }
 
-  clean(dt: any){
+  clean(dt: any) {
     this.filter = '';
     dt.filterGlobal(this.filter, 'contains');
   }

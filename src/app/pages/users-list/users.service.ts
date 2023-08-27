@@ -18,6 +18,10 @@ export class UsersService {
     return this.http.put(environment.url + API_ENDPOINTS.USER.UPDATE + guid, body);
   }
 
+  updatePass(body: any) {
+    return this.http.post(environment.url + API_ENDPOINTS.USER.UPDATE_PASS, body);
+  }
+
   detail(guid: string) {
     return this.http.get(environment.url + API_ENDPOINTS.USER.DETAIL + guid);
   }

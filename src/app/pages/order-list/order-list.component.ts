@@ -56,7 +56,7 @@ export class OrderListComponent implements OnInit {
           tap(() => this.selectedOrders = [])
         ).subscribe((response) => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }
@@ -74,7 +74,7 @@ export class OrderListComponent implements OnInit {
       accept: () => {
         this.orderService.delete(order.guid).subscribe(response => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }
@@ -96,6 +96,20 @@ export class OrderListComponent implements OnInit {
     this.order = new Order();
   }
 
+  saveOrderStatusNext(order: Order) {
+    this.orderService.update({ ...order, userGuid: localStorage["userGuid"], status: order.status == 'NEW' ? 'PRODUCTION' : order.status == 'PRODUCTION' ? 'FINISHED' : 'SENT' }, order.guid).subscribe(response => {
+      this.getMessage((response as ResponseAPI).code);
+    }, () => this.getMessage(404));
+    this.order = new Order();
+  }
+
+  saveOrderStatusBack(order: Order) {
+    this.orderService.update({ ...order, userGuid: localStorage["userGuid"], status: order.status == 'SENT' ? 'FINISHED' : order.status == 'FINISHED' ? 'PRODUCTION' : 'NEW' }, order.guid).subscribe(response => {
+      this.getMessage((response as ResponseAPI).code);
+    }, () => this.getMessage(404));
+    this.order = new Order();
+  }
+
   getMessage(code: number) {
     if (code == 200) {
       this.messageService.add({ severity: 'success', summary: 'Sucesso', detail: 'Operação realizada!', life: 3000 });
@@ -104,7 +118,7 @@ export class OrderListComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Erro', detail: 'Operação não realizada!', life: 3000 });
   }
 
-  clean(dt: any){
+  clean(dt: any) {
     this.filter = '';
     dt.filterGlobal(this.filter, 'contains');
   }

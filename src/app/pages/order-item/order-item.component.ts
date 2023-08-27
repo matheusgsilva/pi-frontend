@@ -41,6 +41,8 @@ export class OrderItemComponent implements OnInit {
 
   list() {
     this.loading = true;
+    this.products = [];
+    this.options = [];
     this.orderItemService.list(this.orderGuid).subscribe(response => {
       this.orderItems = (response as ResponseAPI).data as OrderItem[] || [];
       this.loading = false;
@@ -69,7 +71,7 @@ export class OrderItemComponent implements OnInit {
           tap(() => this.selectedOrderItems = [])
         ).subscribe((response) => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }
@@ -87,7 +89,7 @@ export class OrderItemComponent implements OnInit {
       accept: () => {
         this.orderItemService.delete(orderItem.guid).subscribe(response => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }
@@ -125,5 +127,9 @@ export class OrderItemComponent implements OnInit {
   findProduct(){
     const product = this.products.filter(item => item.guid == this.orderItem.productGuid);
     return product.length > 0 ? product[0].type : null;
+  }
+
+  undo(){
+    window.history.back();
   }
 }

@@ -57,7 +57,7 @@ export class ProductListComponent implements OnInit {
           tap(() => this.selectedProducts = [])
         ).subscribe((response) => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }
@@ -75,7 +75,7 @@ export class ProductListComponent implements OnInit {
       accept: () => {
         this.productService.delete(product.guid).subscribe(response => {
           this.getMessage((response as ResponseAPI).code);
-        });
+        }, () => this.getMessage(404));
       }
     });
   }

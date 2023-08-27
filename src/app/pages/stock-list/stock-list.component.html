@@ -84,24 +84,22 @@
   (onHide)="hideDialog()" styleClass="p-fluid">
   <ng-template pTemplate="content">
     <div class="content">
-      <div class="grid" *ngIf="!stock.guid">
-        <div class="col-12">
+      <div class="grid">
+        <div class="col-6" *ngIf="!stock.guid">
           <span class="p-float-label">
             <p-dropdown [options]="options" [(ngModel)]="stock.productGuid" [autoDisplayFirst]="true" appendTo="body"></p-dropdown>
             <label for="name">Produto*</label>
           </span>
           <small class="p-error" *ngIf="!stock.productGuid">Este campo é obrigatório.</small>
         </div>
-      </div>
-      <div class="grid">
-        <div class="col-6" *ngIf="findProduct() == 'UNIT'">
+        <div class="col-4" *ngIf="findProduct() == 'UNIT'">
           <span class="p-float-label">
             <p-inputNumber [(ngModel)]="stock.quantityAvailable" [min]="0" [max]="99999" [mode]="'decimal'" [step]="1" [showButtons]="true"></p-inputNumber>
-            <label for="email">Quatidade em Estoque (Unidades)*</label>
+            <label for="email">Quantidade em Estoque (Unidades)*</label>
           </span>
           <small class="p-error" *ngIf="!stock.quantityAvailable">Este campo é obrigatório.</small>
         </div>
-        <div class="col-6" *ngIf="findProduct() == 'WEIGHT'">
+        <div class="col-4" *ngIf="findProduct() == 'WEIGHT'">
           <span class="p-float-label">
             <p-inputNumber [(ngModel)]="stock.weightAvailable" [min]="0" [max]="999999.999" [maxFractionDigits]="3" [step]="0.01" [showButtons]="true"></p-inputNumber>
             <label for="email">Peso em Estoque (Kilos)*</label>
