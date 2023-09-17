@@ -89,7 +89,7 @@
   </p-table>
 </div>
 
-<p-dialog [(visible)]="stockDialog" [style]="{width: '50vw'}" header="Dados do Estoque" [modal]="true"
+<p-dialog [(visible)]="stockDialog" [style]="{width: '40vw'}" header="Dados do Estoque" [modal]="true"
   (onHide)="hideDialog()" styleClass="p-fluid">
   <ng-template pTemplate="content">
     <div class="content">
@@ -102,7 +102,7 @@
           </span>
           <small class="p-error" *ngIf="!stock.productGuid">Este campo é obrigatório.</small>
         </div>
-        <div class="col-4" *ngIf="findProduct() == 'UNIT'">
+        <div class="col-6" *ngIf="findProduct() == 'UNIT'">
           <span class="p-float-label">
             <p-inputNumber [(ngModel)]="stock.quantityAvailable" [min]="0" [max]="99999" [mode]="'decimal'" [step]="1"
               [showButtons]="true"></p-inputNumber>
@@ -110,7 +110,7 @@
           </span>
           <small class="p-error" *ngIf="!stock.quantityAvailable">Este campo é obrigatório.</small>
         </div>
-        <div class="col-4" *ngIf="findProduct() == 'WEIGHT'">
+        <div class="col-6" *ngIf="findProduct() == 'WEIGHT'">
           <span class="p-float-label">
             <p-inputNumber [(ngModel)]="stock.weightAvailable" [min]="0" [max]="999999.999" [maxFractionDigits]="3"
               [step]="0.01" [showButtons]="true"></p-inputNumber>
@@ -123,14 +123,14 @@
         <div class="col-6">
           <span class="p-float-label">
             <input pInputText [(ngModel)]="stock.aisle"/>
-            <label for="aisle">Corredor</label>
+            <label for="aisle">Corredor*</label>
           </span>
           <small class="p-error" *ngIf="!stock.aisle">Este campo é obrigatório.</small>
         </div>
         <div class="col-6">
           <span class="p-float-label">
             <input pInputText [(ngModel)]="stock.shelf" />
-            <label for="shelf">Prateleira</label>
+            <label for="shelf">Prateleira*</label>
           </span>
           <small class="p-error" *ngIf="!stock.shelf">Este campo é obrigatório.</small>
         </div>

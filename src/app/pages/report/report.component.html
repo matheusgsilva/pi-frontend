@@ -1,0 +1,32 @@
+<div class="report-container">
+  <h2 style="font-size: 25px; font-weight: bold;">Relatório de Pedidos Finalizados</h2>
+
+  <div class="total-amount">
+    Valor Total dos Pedidos: {{ totalAmount | currency:'BRL' }}
+  </div>
+
+  <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+
+  <p-table [value]="orderItems">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID do Pedido</th>
+        <th>Nome do Produto</th>
+        <th>Quantidade</th>
+        <th>Preço Unitário</th>
+        <th>Total</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-orderItem>
+      <tr>
+        <td>{{ orderItem.guid }}</td>
+        <td>{{ getProductName(orderItem) }}</td>
+        <td>{{ orderItem.quantity }}</td>
+        <td>{{ getProductPrice(orderItem) | currency:'BRL' }}</td>
+        <td>{{ getTotalPrice(orderItem) | currency:'BRL' }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <button style="margin-top: 10px;" pButton label="Exportar para CSV" (click)="exportToCSV()"></button>
+</div>

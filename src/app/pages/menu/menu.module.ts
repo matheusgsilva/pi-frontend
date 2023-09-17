@@ -39,6 +39,7 @@ import { StockListComponent } from '../stock-list/stock-list.component';
 import { OrderItemComponent } from '../order-item/order-item.component';
 import { OrderListComponent } from '../order-list/order-list.component';
 import { StockMapComponent } from '../stock-map/stock-map.component';
+import { ReportComponent } from '../report/report.component';
 
 registerLocaleData(ptBr);
 
@@ -83,7 +84,8 @@ registerLocaleData(ptBr);
     StockListComponent,
     OrderListComponent,
     OrderItemComponent,
-    StockMapComponent
+    StockMapComponent,
+    ReportComponent
   ],
 })
 export class MenuModule { }

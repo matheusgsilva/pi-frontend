@@ -43,6 +43,10 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Pedidos', icon: PrimeIcons.COPY, routerLink: ['/order-list'],
             style: { 'background-color': this.router.url.includes("order-list") ? '#007eff5e' : 'white' }
+          },
+          {
+            label: 'Relatório', icon: PrimeIcons.CHECK_SQUARE, routerLink: ['/report'],
+            style: { 'background-color': this.router.url.includes("report") ? '#007eff5e' : 'white' }
           }
         ]
       },

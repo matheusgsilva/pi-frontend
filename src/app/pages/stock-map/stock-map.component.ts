@@ -31,7 +31,9 @@ export class StockMapComponent implements OnInit {
     });
     this.orderService.list().subscribe(response => {
       this.orders = (response as ResponseAPI).data as Order[] || [];
-      this.orders = this.orders.filter(order => order.status == 'NEW')
+      this.orders = this.orders.filter(order => order.status == 'NEW');
+      if (this.orders.length > 0)
+        this.selectOrder(this.orders[0]);
     });
   }
 
