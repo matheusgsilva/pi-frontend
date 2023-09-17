@@ -1,0 +1,29 @@
+
+<div class="grid">
+  <div class="col-2" style="margin-top: 10px;">
+    <span class="p-float-label">
+      <p-dropdown [style]="{width: '100%'}" [options]="orders" [(ngModel)]="selectedOrder" optionLabel="number" (onChange)="selectOrder($event.value)" styleClass="large-dropdown">
+        <ng-template let-order pTemplate="item">
+          {{order.number}} - {{translateStatus(order.status)}} - {{order.orderDate | date:'dd/MM/yyyy'}}
+        </ng-template>
+      </p-dropdown>
+      <label class="field-label" for="aisle">Pedido Selecionado</label>
+    </span>
+  </div>
+</div>
+
+<div class="warehouse-map">
+  <div *ngFor="let aisle of aisles" class="aisle">
+    <h2 class="aisle-title">Corredor: {{aisle.name}}</h2>
+    <div *ngFor="let shelf of aisle.shelves" class="shelf">
+      <h3 class="shelf-title">Prateleira: {{shelf.name}}</h3>
+      <div *ngFor="let stock of shelf.stocks"
+           class="stock-item"
+           [ngClass]="{'highlighted': isProductInSelectedOrder(stock.productGuid)}">
+        <div class="product-name">Produto: {{stock.productName}}</div>
+        <div class="product-code">Código: {{stock.productCode}}</div>
+        <div class="quantity-available">Quantidade Disponível: {{stock.quantityAvailable}}</div>
+      </div>
+    </div>
+  </div>
+</div>

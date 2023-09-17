@@ -22,8 +22,8 @@
   </p-toolbar>
 
   <p-table #dt [value]="stocks" [rows]="10" [paginator]="true" [style]="{'margin-top':'20px'}"
-    [globalFilterFields]="['productName','productCode','quantity','weight']" responsiveLayout="stack" [(selection)]="selectedStocks"
-    [rowHover]="true" dataKey="guid" [showCurrentPageReport]="false" [loading]="loading">
+    [globalFilterFields]="['productName','productCode','quantity','weight']" responsiveLayout="stack"
+    [(selection)]="selectedStocks" [rowHover]="true" dataKey="guid" [showCurrentPageReport]="false" [loading]="loading">
     <ng-template pTemplate="caption">
       <div class="grid">
         <div class="col">
@@ -35,7 +35,8 @@
             <input pInputText type="text" [(ngModel)]="filter" (input)="dt.filterGlobal(filter, 'contains')"
               placeholder="Pesquisar..." />
           </span>
-          <button pButton pRipple type="button" icon="pi pi-times" class="p-button-danger p-button-outlined" pTooltip="Limpar Filtro" tooltipPosition="top" (click)="clean(dt)"></button>
+          <button pButton pRipple type="button" icon="pi pi-times" class="p-button-danger p-button-outlined"
+            pTooltip="Limpar Filtro" tooltipPosition="top" (click)="clean(dt)"></button>
         </div>
       </div>
     </ng-template>
@@ -44,14 +45,16 @@
         <th style="width: 2%">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th pSortableColumn="productName" style="width: 20%">Produto<p-sortIcon field="productName"></p-sortIcon>
+        <th pSortableColumn="productName">Produto<p-sortIcon field="productName"></p-sortIcon>
         </th>
-        <th pSortableColumn="productCode" style="width: 20%">Código do Produto<p-sortIcon field="productCode"></p-sortIcon>
+        <th pSortableColumn="productCode">Código do Produto<p-sortIcon field="productCode"></p-sortIcon>
         </th>
-        <th pSortableColumn="stockType" style="width: 20%">Tipo do Estoque<p-sortIcon field="stockType"></p-sortIcon>
+        <th pSortableColumn="stockType">Tipo do Estoque<p-sortIcon field="stockType"></p-sortIcon>
         </th>
-        <th style="width: 20%">Disponibilidade em Estoque</th>
-        <th style="width: 20%">Ações</th>
+        <th>Disponibilidade em Estoque</th>
+        <th pSortableColumn="aisle">Corredor<p-sortIcon field="aisle"></p-sortIcon></th>
+        <th pSortableColumn="shelf">Prateleira<p-sortIcon field="shelf"></p-sortIcon></th>
+        <th>Ações</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-stock>
@@ -62,10 +65,15 @@
         <td>{{stock.productName}}</td>
         <td>{{stock.productCode}}</td>
         <td>{{stock.stockType == 'UNIT' ? 'UNIDADE' : 'PESO'}}</td>
-        <td>{{stock.stockType == 'UNIT' ? stock.quantityAvailable == 1 ? '1 Unidade' : stock.quantityAvailable + ' Unidades' : stock.weightAvailable == 1.000 ? '1 Kilo' : stock.weightAvailable?.toString().replace('.', ',') + ' Kilos'}}</td>
+        <td>{{stock.stockType == 'UNIT' ? stock.quantityAvailable == 1 ? '1 Unidade' : stock.quantityAvailable + '
+          Unidades' : stock.weightAvailable == 1.000 ? '1 Kilo' : stock.weightAvailable?.toString().replace('.', ',') +
+          ' Kilos'}}</td>
+          <td>{{stock.aisle}}</td>
+          <td>{{stock.shelf}}</td>
         <td>
           <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
-            style="margin-left: 5px" (click)="editStock(stock)" pTooltip="Editar Estoque" tooltipPosition="top"></button>
+            style="margin-left: 5px" (click)="editStock(stock)" pTooltip="Editar Estoque"
+            tooltipPosition="top"></button>
           <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" style="margin-left: 5px"
             (click)="deleteStock(stock)" pTooltip="Excluir Estoque" tooltipPosition="top"></button>
         </td>
@@ -73,7 +81,8 @@
     </ng-template>
     <ng-template pTemplate="summary">
       <div class="p-d-flex p-ai-center p-jc-between">
-        {{stocks ? stocks.length == 1 ? stocks.length + ' Estoque no total.' : stocks.length + ' Estoques no total.' : 0 + '
+        {{stocks ? stocks.length == 1 ? stocks.length + ' Estoque no total.' : stocks.length + ' Estoques no total.' : 0
+        + '
         Estoques no total.'}}
       </div>
     </ng-template>
@@ -87,24 +96,43 @@
       <div class="grid">
         <div class="col-6" *ngIf="!stock.guid">
           <span class="p-float-label">
-            <p-dropdown [options]="options" [(ngModel)]="stock.productGuid" [autoDisplayFirst]="true" appendTo="body"></p-dropdown>
+            <p-dropdown [options]="options" [(ngModel)]="stock.productGuid" [autoDisplayFirst]="true"
+              appendTo="body"></p-dropdown>
             <label for="name">Produto*</label>
           </span>
           <small class="p-error" *ngIf="!stock.productGuid">Este campo é obrigatório.</small>
         </div>
         <div class="col-4" *ngIf="findProduct() == 'UNIT'">
           <span class="p-float-label">
-            <p-inputNumber [(ngModel)]="stock.quantityAvailable" [min]="0" [max]="99999" [mode]="'decimal'" [step]="1" [showButtons]="true"></p-inputNumber>
+            <p-inputNumber [(ngModel)]="stock.quantityAvailable" [min]="0" [max]="99999" [mode]="'decimal'" [step]="1"
+              [showButtons]="true"></p-inputNumber>
             <label for="email">Quantidade em Estoque (Unidades)*</label>
           </span>
           <small class="p-error" *ngIf="!stock.quantityAvailable">Este campo é obrigatório.</small>
         </div>
         <div class="col-4" *ngIf="findProduct() == 'WEIGHT'">
           <span class="p-float-label">
-            <p-inputNumber [(ngModel)]="stock.weightAvailable" [min]="0" [max]="999999.999" [maxFractionDigits]="3" [step]="0.01" [showButtons]="true"></p-inputNumber>
+            <p-inputNumber [(ngModel)]="stock.weightAvailable" [min]="0" [max]="999999.999" [maxFractionDigits]="3"
+              [step]="0.01" [showButtons]="true"></p-inputNumber>
             <label for="email">Peso em Estoque (Kilos)*</label>
           </span>
           <small class="p-error" *ngIf="!stock.weightAvailable">Este campo é obrigatório.</small>
+        </div>
+      </div>
+      <div class="grid">
+        <div class="col-6">
+          <span class="p-float-label">
+            <input pInputText [(ngModel)]="stock.aisle"/>
+            <label for="aisle">Corredor</label>
+          </span>
+          <small class="p-error" *ngIf="!stock.aisle">Este campo é obrigatório.</small>
+        </div>
+        <div class="col-6">
+          <span class="p-float-label">
+            <input pInputText [(ngModel)]="stock.shelf" />
+            <label for="shelf">Prateleira</label>
+          </span>
+          <small class="p-error" *ngIf="!stock.shelf">Este campo é obrigatório.</small>
         </div>
       </div>
     </div>
@@ -115,7 +143,8 @@
       *ngIf="!stock.guid"
       [disabled]="(stock.stockType == 'UNIT' && stock.quantityAvailable == 0) || (stock.stockType == 'WEIGHT' && stock.weightAvailable == 0.000) ? true : false"></button>
     <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-success" (click)="saveStock()"
-      *ngIf="stock.guid" [disabled]="(stock.stockType == 'UNIT' && stock.quantityAvailable == 0) || (stock.stockType == 'WEIGHT' && stock.weightAvailable == 0.000) ? true : false"></button>
+      *ngIf="stock.guid"
+      [disabled]="(stock.stockType == 'UNIT' && stock.quantityAvailable == 0) || (stock.stockType == 'WEIGHT' && stock.weightAvailable == 0.000) ? true : false"></button>
   </ng-template>
 </p-dialog>
 

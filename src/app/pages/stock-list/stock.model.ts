@@ -8,4 +8,6 @@ export class Stock {
   weight: number = 0;
   quantityAvailable: number = 0;
   weightAvailable: number = 0;
+  aisle: string = "";
+  shelf: string = "";
 }

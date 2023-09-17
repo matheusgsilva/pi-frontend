@@ -38,6 +38,7 @@ import ptBr from '@angular/common/locales/pt';
 import { StockListComponent } from '../stock-list/stock-list.component';
 import { OrderItemComponent } from '../order-item/order-item.component';
 import { OrderListComponent } from '../order-list/order-list.component';
+import { StockMapComponent } from '../stock-map/stock-map.component';
 
 registerLocaleData(ptBr);
 
@@ -81,7 +82,8 @@ registerLocaleData(ptBr);
     ProductListComponent,
     StockListComponent,
     OrderListComponent,
-    OrderItemComponent
+    OrderItemComponent,
+    StockMapComponent
   ],
 })
 export class MenuModule { }

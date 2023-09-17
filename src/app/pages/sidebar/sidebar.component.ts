@@ -22,7 +22,7 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.items = [
       {
-        label: 'Cadastros', icon: PrimeIcons.CLONE, expanded: true,
+        label: 'Menu', icon: PrimeIcons.CLONE, expanded: true,
         items: [
           {
             label: 'Usuários', icon: PrimeIcons.USERS, routerLink: ['/users-list'],
@@ -35,6 +35,10 @@ export class SidebarComponent implements OnInit {
           {
             label: 'Estoque', icon: PrimeIcons.CHECK_SQUARE, routerLink: ['/stock-list'],
             style: { 'background-color': this.router.url.includes("stock-list") ? '#007eff5e' : 'white' }
+          },
+          {
+            label: 'Mapa do Estoque', icon: PrimeIcons.CHECK_SQUARE, routerLink: ['/stock-map'],
+            style: { 'background-color': this.router.url.includes("stock-map") ? '#007eff5e' : 'white' }
           },
           {
             label: 'Pedidos', icon: PrimeIcons.COPY, routerLink: ['/order-list'],
