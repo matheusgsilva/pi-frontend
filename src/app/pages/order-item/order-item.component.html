@@ -55,7 +55,7 @@
         <th style="width: 20%" *ngIf="orderStatus != 'FINISHED' && orderStatus != 'SENT'">Disponibilidade em Estoque</th>
         <th style="width: 20%" *ngIf="orderStatus != 'FINISHED' && orderStatus != 'SENT'">Quantidade Desejada</th>
         <th style="width: 20%" *ngIf="orderStatus == 'FINISHED' || orderStatus == 'SENT'">Quantidade retirada do Estoque</th>
-        <th style="width: 20%">Ações</th>
+        <th style="width: 20%" *ngIf="orderStatus == 'NEW'">Ações</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-orderitem>
@@ -67,7 +67,7 @@
         <td>{{orderitem.productCode}}</td>
         <td *ngIf="orderStatus != 'FINISHED' && orderStatus != 'SENT'">{{orderitem.productType == 'UNIT' ? orderitem.quantityAvailable == 1 ? '1 Unidade' : orderitem.quantityAvailable + ' Unidades' : orderitem.weightAvailable == 1.000 ? '1 Kilo' : orderitem.weightAvailable?.toString().replace('.', ',') + ' Kilos'}}</td>
         <td>{{orderitem.productType == 'UNIT' ? orderitem.quantity == 1 ? '1 Unidade' : orderitem.quantity + ' Unidades' : orderitem.weight == 1.000 ? '1 Kilo' : orderitem.weight?.toString().replace('.', ',') + ' Kilos'}}</td>
-        <td>
+        <td *ngIf="orderStatus == 'NEW'">
           <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
             style="margin-left: 5px" (click)="editOrderItem(orderitem)" pTooltip="Editar Item do Pedido" tooltipPosition="top"></button>
           <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-danger" style="margin-left: 5px"

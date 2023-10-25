@@ -42,7 +42,7 @@ export class ReportComponent implements OnInit {
 
   loadFinishedOrders() {
     this.orderService.list().subscribe(response => {
-      this.orders = ((response as ResponseAPI).data as Order[] || []).filter(order => order.status == 'FINISHED');
+      this.orders = ((response as ResponseAPI).data as Order[] || []).filter(order => order.status == 'FINISHED' || order.status == 'SENT');
 
       const orderItemObservables = this.orders.map((order: Order) => this.orderItemService.list(order.guid));
 
